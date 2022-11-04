@@ -3,7 +3,6 @@ set nu
 let mapleader= ' '
 let g:mapleader = ' '
 
-
 syntax on
 
 filetype on
@@ -44,20 +43,21 @@ set relativenumber number
 set encoding=utf-8
 
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
-set helplang=cn
+set termencoding=utf-8
+" set helplang=cn
 
-set rtp+=~/.fzf                  " fzf 
+set rtp+=~/.fzf                  " fzf
 
 " 配置python路径
 let g:python_host_prog  = '/usr/bin/python2.7'
-let g:python3_host_prog = '/usr/bin/python3.6'
-
+let g:python3_host_prog = '/usr/bin/python3.8'
 
 " 设置path, vim中会索引
-"set path+=/usr/include/c++/5.4.0/,/usr/local/include/,
-"set path+=/usr/include/clang/3.9/include/,
-set path=.,/usr/include/c++/5,/usr/include,/home/l0phtg/tools/llvm-project/llvm/include
-
+" set path+=/usr/include/c++/9/,/usr/local/include/,
+" set path+=/usr/include/clang/12/include/,
+set path+=/usr/include/python3.7
+set path+=/usr/local/cuda-11.7/include
+set path+=/usr/include/c++/9,/usr/include,/home/l0phtg/removable/work-git/llvm-project/llvm/include
 
 " 记录光标位置
 "augroup resCur
@@ -67,13 +67,13 @@ set path=.,/usr/include/c++/5,/usr/include,/home/l0phtg/tools/llvm-project/llvm/
 "set background=dark
 
 "plug插件
-
-call plug#begin()
-
+" Plugins will be downloaded under the specified directory.
+call plug#begin('~/.vim/plugged')
 "Plug 'NLKNguyen/papercolor-theme'   弃用
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'vim-airline/vim-airline'         "状态栏
 Plug 'vim-airline/vim-airline-themes'
+Plug 'octol/vim-cpp-enhanced-highlight' "cpp 语法高亮
 
 Plug 'tpope/vim-fugitive'   "airline status 显示分支
 
@@ -84,13 +84,18 @@ Plug 'ryanoasis/vim-devicons'   " vim icons
 Plug 'Shougo/defx.nvim', {'do': ':UpdateRemotePlugins'}   " 目录
 Plug 'kristijanhusak/defx-icons'  " icons for defx
 "Plug 'kristijanhusak/defx-git'    " git for defx  一般不怎么需要
-
+"
+"Plug '~/.fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }   "异步补全
 Plug 'Shougo/neoinclude.vim' "c 头文件补全
 Plug 'Shougo/neco-syntax'    "关键字补全 keyword
+" Plug 'deoplete-plugins/deoplete-clang'
 Plug 'Shougo/deoplete-clangx' " clang complete for deoplete
-Plug 'zchee/deoplete-jedi'       " Python补全
+" Plug 'deoplete-plugins/deoplete-jedi'       " Python补全
+Plug 'Shougo/echodoc'
 
 Plug 'majutsushi/tagbar'   " tag显示
 Plug 'ap/vim-buftabline'   " buffer
@@ -103,14 +108,13 @@ Plug 'SirVer/ultisnips'           " 代码补全插件
 Plug 'honza/vim-snippets'		  " 补全片段 follow ultisnips
 "
 
-Plug 'Raimondi/delimitMate'       " 不全, \" \( 等.
+Plug 'Raimondi/delimitMate'       " 补全, \" \( 等.
 
 Plug 'scrooloose/nerdcommenter'   " 自动注释   <leader>cc  注释当先选中文本  <leader>cu 取消选中文本块的注释
 
 Plug 'lvht/tagbar-markdown'       " markdown  tagbar显示
 
 Plug 'pboettch/vim-cmake-syntax'  " cmake语法高亮
-
 call plug#end()
 
 "set background=dark
@@ -124,14 +128,29 @@ let g:airline#extensions#branch#enabled = 1
 
 let g:airline#extensions#whitespace#enabled = 0  "取消airline空格检测
 
-"let g:airline_section_warning (ycm_warning_count, syntastic-warn, languageclient_warning_count) "whitespace
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_symbols.colnr = ''
 
+""let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.linenr = ''
 
-"
+" cpp highlight
+let g:cpp_experimental_template_highlight = 1
+" cuda highlight 
+" Enable highlighting of CUDA kernel calls
+let g:cuda_kernel_highlight = 1
+" Highlight keywords from CUDA Runtime API
+let g:cuda_runtime_api_highlight = 1
+" Highlight keywords from CUDA Driver API
+let g:cuda_driver_api_highlight = 1
+" Highlight keywords from CUDA Thrust library
+let g:cuda_thrust_highlight = 1
+
 " 设置tagbar
 let g:tagbar_width=30
 let g:tagbar_left=1
-
 
 " 设置 deoplete.nvim
 let g:deoplete#enable_at_startup = 1
@@ -142,6 +161,12 @@ let g:deoplete#enable_at_startup = 1
 
 "关闭deoplete preview 窗口
 set completeopt-=preview
+
+" 设置clang
+" let g:deoplete#sources#clang#libclang_path = "/usr/lib/x86_64-linux-gnu/libclang-12.so.1"
+" let g:deoplete#sources#clang#clang_header = "/usr/lib/clang"
+" let g:deoplete#custom#var#clangx#clang_binary = "/usr/bin/clang-12" "('clangx', 'clang_binary', '/usr/bin/clang-12')
+" call deoplete#custom#var('clangx', 'clang_binary', '/usr/bin/clang-12')
 
 
 "设置Supertab, 同时补全ultisnips和deoplete和vim-snippets
@@ -159,8 +184,24 @@ let g:UltiSnipsJumpBackwardTrigger="<S-tab>"
 " 使用 UltiSnipsEdit 命令时垂直分割屏幕
 let g:UltiSnipsEditSplit="vertical"
 
+if executable('clipboard-provider')
+  let g:clipboard = {
+          \ 'name': 'myClipboard',
+          \     'copy': {
+          \         '+': 'clipboard-provider copy',
+          \         '*': 'clipboard-provider copy',
+          \     },
+          \     'paste': {
+          \         '+': 'clipboard-provider paste',
+          \         '*': 'clipboard-provider paste',
+          \     },
+          \ }
+endif
 
-
+" 配置echodoc
+let g:echodoc_enable_at_startup = 1
+let g:echodoc#type = 'virtual'
+" let g:echodoc#type = 'floating'
 
 " 配置vimbuftabline
 let g:buftabline_numbers=2
@@ -184,9 +225,8 @@ nmap <leader>0 <Plug>BufTabLine.Go(10)
 
 
 " 配置nvim的terminal模式  未完成
-tnoremap <Esc> <C-\><C-n>
-tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
-
+"tnoremap <Esc> <C-\><C-n>
+"tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 
 
 "快捷键只在常规模式下有用 nnoremap
@@ -195,17 +235,17 @@ tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 "endfunction
 "
 
-nnoremap <F2> :TagbarToggle <CR>
+nnoremap <F2> :TagbarToggle<CR>
 
-nnoremap <leader>fs :w <CR>
-nnoremap <leader>fS :wall <CR>
+nnoremap <leader>fs :w<CR>
+nnoremap <leader>fsa :wall<CR>
 
-nnoremap <leader>qq :wq <CR>
+nnoremap <leader>qq :wq<CR>
 "vim windows窗口左右
-nnoremap <C-h> <C-w>h <CR>
-nnoremap <C-l> <C-w>l <CR>
-nnoremap <C-j> <C-w>j <CR>
-nnoremap <C-k> <C-w>k <CR>
+nnoremap <C-h> <C-w>h<CR>
+nnoremap <C-l> <C-w>l<CR>
+nnoremap <C-j> <C-w>j<CR>
+nnoremap <C-k> <C-w>k<CR>
 
 "分割窗口
 nnoremap <leader>wj :split<CR>
@@ -224,11 +264,12 @@ autocmd FileType c set tabstop=4 shiftwidth=4 expandtab ai
 
 autocmd FileType python set tabstop=4 shiftwidth=4 expandtab ai
 autocmd FileType ruby,javascript,html,css,xml set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
-
+autocmd BufNewFile,BufRead *.cu set filetype=cpp
 
 "defx
 "-direction=topleft or botright
-nnoremap <F3> :Defx -split=vertical -winwidth=30 -direction=botright -root-marker="" -toggle -columns=icons:filename:type <CR>           
+"nnoremap <F3> :Defx -split=vertical -winwidth=30 -direction=botright -root-marker="" -toggle -columns=icons:filename:type <CR>           
+nnoremap <F3> :Defx -split=vertical -winwidth=30 -direction=botright -toggle<CR>
 
 autocmd FileType defx call s:defx_my_settings()
 
@@ -327,10 +368,23 @@ nnoremap <leader>lb :Denite buffer<CR>
 "列出当前目录的文件
 "nnoremap <leader>lf :Denite file<CR>  没有必要
 "递归列出当前目录下的文件
-nnoremap <leader>ls :Denite file/rec<CR>   
+"nnoremap <leader>ls :Denite file/rec<CR>
+nnoremap <leader>ls :Files<CR>
+nnoremap <leader>lf :Buffers<CR>
 
 "列出当前文件的行
-nnoremap <leader>ll :Denite line<CR>  
+"nnoremap <leader>ll :Denite line<CR>  
+nnoremap <leader>ll :Lines<CR>  
+noremap <leader>gls :GFiles<CR>
+noremap <leader>gss :GFiles?<CR>   
+
+"git 
+noremap <leader>gad :Git add %<CR>
+noremap <leader>gcm :Git commit<CR>
+noremap <leader>gbm :Git blame<CR>
+
+noremap <leader>bt :BTags<CR>
+noremap <leader>st :Tags<CR>
 
 
 " Change file/rec command.
@@ -339,14 +393,26 @@ call denite#custom#var('file/rec', 'command',
 	\ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
 
 call denite#custom#option('default', {
+	\ 'auto_resize': 1,
+	\ 'statusline': 0,
+	\ 'winheight': 15,
 	\ 'prompt': 'λ:',
-	\ 'empty': 0,
-	\ 'winheight': 16,
-	\ 'source_names': 'short',
-	\ 'vertical_preview': 1,
-	\ 'auto-accel': 1,
-	\ 'auto-resume': 1,
+	\ 'start_filter': 1,
+	\ 'vertical_preview': 1, 
+	\ 'floating_preview': 1,
+	\ 'preview_width': 70,
+	\ 'preview_height': 30,
 	\ })
+
+"call denite#custom#option('default', {
+	"\ 'prompt': 'λ:',
+	"\ 'empty': 0,
+	"\ 'winheight': 16,
+	"\ 'source_names': 'short',
+	"\ 'floating-preview': 1,
+	"\ 'auto-accel': 1,
+	"\ 'auto-resume': 1,
+	"\ })
 
 "定义映射
 "正常模式下的映射
@@ -359,6 +425,22 @@ nnoremap <leader>lt :Denite outline <CR>
 "列出当前文件目录下的所有tag (means list all tags
 nnoremap <leader>lT :call denite#start([{'name':'outline','args':['--recurse=yes']}]) <CR>  
 
+" Define mappings
+autocmd FileType denite call s:denite_my_settings()
+function! s:denite_my_settings() abort
+  nnoremap <silent><buffer><expr> <CR>
+  \ denite#do_map('do_action')
+  nnoremap <silent><buffer><expr> d
+  \ denite#do_map('do_action', 'delete')
+  nnoremap <silent><buffer><expr> p
+  \ denite#do_map('do_action', 'preview')
+  nnoremap <silent><buffer><expr> q
+  \ denite#do_map('quit')
+  nnoremap <silent><buffer><expr> i
+  \ denite#do_map('open_filter_buffer')
+  nnoremap <silent><buffer><expr> <Space>
+  \ denite#do_map('toggle_select').'j'
+endfunction
 
 "Denite插入模式下的映射
 call denite#custom#map(
@@ -379,7 +461,6 @@ call denite#custom#map(
       \ '<denite:move_to_previous_line>',
       \ 'noremap' 
 	  \)
-
 
 " Change matchers.
 call denite#custom#source(
@@ -407,4 +488,3 @@ call denite#custom#var('file/rec/git', 'command',
 
 call denite#custom#alias('source', 'file/rec/py', 'file/rec')
 call denite#custom#var('file/rec/py', 'command',['scantree.py'])
-
