@@ -47,6 +47,7 @@ set termencoding=utf-8
 " set helplang=cn
 
 set rtp+=~/.fzf                  " fzf
+set tags=./.tags;,.tags          " ctags
 
 " 配置python路径
 let g:python_host_prog  = '/usr/bin/python2.7'
@@ -57,7 +58,7 @@ let g:python3_host_prog = '/usr/bin/python3.8'
 " set path+=/usr/include/clang/12/include/,
 set path+=/usr/include/python3.7
 set path+=/usr/local/cuda-11.7/include
-set path+=/usr/include/c++/9,/usr/include,/home/l0phtg/removable/work-git/llvm-project/llvm/include
+set path+=/usr/include/c++/9,/usr/include,/home/l0phtg/tools/llvm-projects/build/include
 
 " 记录光标位置
 "augroup resCur
@@ -69,7 +70,45 @@ set path+=/usr/include/c++/9,/usr/include,/home/l0phtg/removable/work-git/llvm-p
 "plug插件
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
-"Plug 'NLKNguyen/papercolor-theme'   弃用
+
+Plug 'goolord/alpha-nvim'
+
+" lsp
+Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/mason.nvim'
+
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'hrsh7th/nvim-cmp'
+
+"Plug 'kosayoda/nvim-lightbulb' " code actions
+Plug 'ray-x/lsp_signature.nvim'  "show function signature when typing
+
+Plug 'simrat39/symbols-outline.nvim'  " symbols
+
+"quickfix
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'folke/trouble.nvim'
+
+"Plug 'nvim-Treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+"Plug 'nvim-treesitter/nvim-treesitter-context'
+
+"search preview integrad
+"ripgrep for find files, grap
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.x' }
+Plug 'nvim-telescope/telescope-live-grep-args.nvim'
+"Plug 'nvim-telescope/telescope-ui-select.nvim'
+Plug 'nvim-telescope/telescope-rg.nvim'
+"Plug 'MattesGroeger/vim-bookmarks'
+"Plug 'tom-anders/telescope-vim-bookmarks.nvim'
+"Plug 'nvim-telescope/telescope-dap.nvim'
+
+
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'vim-airline/vim-airline'         "状态栏
 Plug 'vim-airline/vim-airline-themes'
@@ -85,28 +124,29 @@ Plug 'Shougo/defx.nvim', {'do': ':UpdateRemotePlugins'}   " 目录
 Plug 'kristijanhusak/defx-icons'  " icons for defx
 "Plug 'kristijanhusak/defx-git'    " git for defx  一般不怎么需要
 "
-"Plug '~/.fzf'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }   "异步补全
+Plug 'liuchengxu/vista.vim'
+
 Plug 'Shougo/neoinclude.vim' "c 头文件补全
 Plug 'Shougo/neco-syntax'    "关键字补全 keyword
-" Plug 'deoplete-plugins/deoplete-clang'
-Plug 'Shougo/deoplete-clangx' " clang complete for deoplete
-" Plug 'deoplete-plugins/deoplete-jedi'       " Python补全
 Plug 'Shougo/echodoc'
 
 Plug 'majutsushi/tagbar'   " tag显示
 Plug 'ap/vim-buftabline'   " buffer
 
-" Supertab
-Plug 'ervandew/supertab'   " 映射其他键为tab, 我们用于解决ultisnips和deoplete的补全冲突
+Plug 'L3MON4D3/LuaSnip'
+Plug 'rafamadriz/friendly-snippets'
+Plug 'honza/vim-snippets'
 
-" 补全: https://keelii.com/2018/08/26/vim-plugin-ultisnips-advanced-tips/
-Plug 'SirVer/ultisnips'           " 代码补全插件
-Plug 'honza/vim-snippets'		  " 补全片段 follow ultisnips
-"
+" test
+"Plug 'nvim-lua/plenary.nvim'
+"Plug 'nvim-treesitter/nvim-treesitter'
+"Plug 'antoinemadec/FixCursorHold.nvim'
+"Plug 'nvim-neotest/neotest'
+
+Plug 'folke/which-key.nvim'
 
 Plug 'Raimondi/delimitMate'       " 补全, \" \( 等.
 
@@ -115,6 +155,7 @@ Plug 'scrooloose/nerdcommenter'   " 自动注释   <leader>cc  注释当先选�
 Plug 'lvht/tagbar-markdown'       " markdown  tagbar显示
 
 Plug 'pboettch/vim-cmake-syntax'  " cmake语法高亮
+
 call plug#end()
 
 "set background=dark
@@ -133,8 +174,8 @@ if !exists('g:airline_symbols')
 endif
 let g:airline_symbols.colnr = ''
 
-""let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.linenr = ''
+let g:airline_symbols.linenr = '¶'
+"let g:airline_symbols.linenr = ''
 
 " cpp highlight
 let g:cpp_experimental_template_highlight = 1
@@ -152,38 +193,26 @@ let g:cuda_thrust_highlight = 1
 let g:tagbar_width=30
 let g:tagbar_left=1
 
-" 设置 deoplete.nvim
-let g:deoplete#enable_at_startup = 1
-"设置Tab为补全  deoplete
-"inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"                
-"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-"inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+" welcome
+luafile ~/.config/nvim/lua/alpha-dot.lua
+" lsp && cmp
+set completeopt=menu,menuone,noselect
+" lsp
+luafile ~/.config/nvim/lua/config.lua
+luafile ~/.config/nvim/lua/cmp-dot.lua
+luafile ~/.config/nvim/lua/lsp.lua
+luafile ~/.config/nvim/lua/lsp-signature.lua
+luafile ~/.config/nvim/lua/trouble-dot.lua
 
-"关闭deoplete preview 窗口
-set completeopt-=preview
+luafile ~/.config/nvim/lua/lsp-handlers.lua
 
-" 设置clang
-" let g:deoplete#sources#clang#libclang_path = "/usr/lib/x86_64-linux-gnu/libclang-12.so.1"
-" let g:deoplete#sources#clang#clang_header = "/usr/lib/clang"
-" let g:deoplete#custom#var#clangx#clang_binary = "/usr/bin/clang-12" "('clangx', 'clang_binary', '/usr/bin/clang-12')
-" call deoplete#custom#var('clangx', 'clang_binary', '/usr/bin/clang-12')
+luafile ~/.config/nvim/lua/symbols-outline-dot.lua
 
+luafile ~/.config/nvim/lua/telescope-dot.lua
+" which keys
+luafile ~/.config/nvim/lua/whichkey-dot.lua
 
-"设置Supertab, 同时补全ultisnips和deoplete和vim-snippets
-let g:SuperTabDefaultCompletionType = "<C-n>"
-
-" https://www.jianshu.com/p/bb91582317ed
-"
-" 配置补全UltiSnip
-let g:UltiSnipsExpandTrigger="<tab>"   " 
-"let g:UltiSnipsExpandTrigger="<expr> <space>"
-
-" 使用 tab 切换下一个触发点，shit+tab 上一个触发点
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<S-tab>"
-" 使用 UltiSnipsEdit 命令时垂直分割屏幕
-let g:UltiSnipsEditSplit="vertical"
-
+" clipboard
 if executable('clipboard-provider')
   let g:clipboard = {
           \ 'name': 'myClipboard',
@@ -263,13 +292,14 @@ autocmd FileType c++ set tabstop=4 shiftwidth=4 expandtab ai
 autocmd FileType c set tabstop=4 shiftwidth=4 expandtab ai
 
 autocmd FileType python set tabstop=4 shiftwidth=4 expandtab ai
+autocmd FileType lua set tabstop=2 shiftwidth=2 expandtab ai
 autocmd FileType ruby,javascript,html,css,xml set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 autocmd BufNewFile,BufRead *.cu set filetype=cpp
 
 "defx
 "-direction=topleft or botright
-"nnoremap <F3> :Defx -split=vertical -winwidth=30 -direction=botright -root-marker="" -toggle -columns=icons:filename:type <CR>           
 nnoremap <F3> :Defx -split=vertical -winwidth=30 -direction=botright -toggle<CR>
+" let g:defx_icons_enable_syntax_highlight = 1
 
 autocmd FileType defx call s:defx_my_settings()
 
@@ -369,7 +399,18 @@ nnoremap <leader>lb :Denite buffer<CR>
 "nnoremap <leader>lf :Denite file<CR>  没有必要
 "递归列出当前目录下的文件
 "nnoremap <leader>ls :Denite file/rec<CR>
-nnoremap <leader>ls :Files<CR>
+
+"Fzf
+" - Popup window (center of the screen)
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+" let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6, 'relative': v:true, 'yoffset': 1.0 } }
+
+let g:fzf_tags_command = 'ctags -R -f ./.tags --exclude=".git" --exclude=".vscode"'
+" let g:fzf_preview_window = []
+
+"nnoremap <leader>ls :Files<CR>
+"nnoremap <leader>lf :Buffers<CR>
+nnoremap <leader>ls :Telescope find_files<CR>
 nnoremap <leader>lf :Buffers<CR>
 
 "列出当前文件的行
@@ -383,9 +424,24 @@ noremap <leader>gad :Git add %<CR>
 noremap <leader>gcm :Git commit<CR>
 noremap <leader>gbm :Git blame<CR>
 
-noremap <leader>bt :BTags<CR>
-noremap <leader>st :Tags<CR>
-
+"buffer tags
+noremap <A-p> :BTags<CR>
+"dir tags
+noremap <A-P> :Tags<CR>
+let g:fzf_colors =
+    \ { 'fg':      ['fg', 'Normal'],
+      \ 'bg':      ['bg', 'Normal'],
+      \ 'hl':      ['fg', 'Comment'],
+      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+      \ 'hl+':     ['fg', 'Statement'],
+      \ 'info':    ['fg', 'PreProc'],
+      \ 'border':  ['fg', 'Ignore'],
+      \ 'prompt':  ['fg', 'Conditional'],
+      \ 'pointer': ['fg', 'Exception'],
+      \ 'marker':  ['fg', 'Keyword'],
+      \ 'spinner': ['fg', 'Label'],
+      \ 'header':  ['fg', 'Comment'] }
 
 " Change file/rec command.
 " 自定义变量
@@ -423,7 +479,8 @@ nnoremap <leader>lt :Denite outline <CR>
 
 
 "列出当前文件目录下的所有tag (means list all tags
-nnoremap <leader>lT :call denite#start([{'name':'outline','args':['--recurse=yes']}]) <CR>  
+nnoremap <leader>lT :call denite#start([{'name':'outline',
+			\ 'args':['--recurse=yes', '-f=./.tags', '--exclude=".git" --exclude=".vscode"']}]) <CR>
 
 " Define mappings
 autocmd FileType denite call s:denite_my_settings()

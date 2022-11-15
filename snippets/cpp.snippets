@@ -1,0 +1,12 @@
+
+snippet kerd "kernel func define"
+	void ${0}(${1}, ${2})
+	{
+		${3}
+	}
+
+snippet kerc "kernel func call"
+	${0}<<<gird,block>>>(${1}, ${2});
+
+snippet checkcuda "CHECK"
+	CHECK(${0})
