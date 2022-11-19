@@ -73,6 +73,8 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'goolord/alpha-nvim'
 
+Plug 'dstein64/vim-startuptime' " start time
+
 " lsp
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/mason.nvim'
@@ -93,7 +95,7 @@ Plug 'simrat39/symbols-outline.nvim'  " symbols
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'folke/trouble.nvim'
 
-"Plug 'nvim-Treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-Treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 "Plug 'nvim-treesitter/nvim-treesitter-context'
 
 "search preview integrad
@@ -108,20 +110,26 @@ Plug 'nvim-telescope/telescope-rg.nvim'
 "Plug 'tom-anders/telescope-vim-bookmarks.nvim'
 "Plug 'nvim-telescope/telescope-dap.nvim'
 
+"session
+Plug 'Shatur/neovim-session-manager'
+
+" code execution, terminal and so on...
+Plug 'michaelb/sniprun', {'do': 'bash install.sh'}
 
 Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 Plug 'vim-airline/vim-airline'         "状态栏
 Plug 'vim-airline/vim-airline-themes'
 Plug 'octol/vim-cpp-enhanced-highlight' "cpp 语法高亮
 
 Plug 'tpope/vim-fugitive'   "airline status 显示分支
 
-Plug 'Shougo/denite.nvim'    " fuzzy finder 
-"
-Plug 'ryanoasis/vim-devicons'   " vim icons
+"Plug 'ryanoasis/vim-devicons'   " vim icons
 
+" file tree
 Plug 'Shougo/defx.nvim', {'do': ':UpdateRemotePlugins'}   " 目录
-Plug 'kristijanhusak/defx-icons'  " icons for defx
+Plug 'nvim-tree/nvim-tree.lua'
+"Plug 'kristijanhusak/defx-icons'  " icons for defx
 "Plug 'kristijanhusak/defx-git'    " git for defx  一般不怎么需要
 "
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -152,15 +160,17 @@ Plug 'Raimondi/delimitMate'       " 补全, \" \( 等.
 
 Plug 'scrooloose/nerdcommenter'   " 自动注释   <leader>cc  注释当先选中文本  <leader>cu 取消选中文本块的注释
 
-Plug 'lvht/tagbar-markdown'       " markdown  tagbar显示
+" Plug 'lvht/tagbar-markdown'       " markdown  tagbar显示, all change to lsp
 
-Plug 'pboettch/vim-cmake-syntax'  " cmake语法高亮
+" Plug 'pboettch/vim-cmake-syntax'  " cmake语法高亮
 
 call plug#end()
 
 "set background=dark
 "colorscheme PaperColor
 color dracula
+"colorscheme dracula
+"colorscheme catppuccin
 
 set t_Co=256
 let g:airline_powerline_fonts = 1  " 设置airline支持powerline字体
@@ -178,22 +188,23 @@ let g:airline_symbols.linenr = '¶'
 "let g:airline_symbols.linenr = ''
 
 " cpp highlight
-let g:cpp_experimental_template_highlight = 1
+" let g:cpp_experimental_template_highlight = 1
 " cuda highlight 
 " Enable highlighting of CUDA kernel calls
-let g:cuda_kernel_highlight = 1
+" let g:cuda_kernel_highlight = 1
 " Highlight keywords from CUDA Runtime API
-let g:cuda_runtime_api_highlight = 1
+" let g:cuda_runtime_api_highlight = 1
 " Highlight keywords from CUDA Driver API
-let g:cuda_driver_api_highlight = 1
+" let g:cuda_driver_api_highlight = 1
 " Highlight keywords from CUDA Thrust library
-let g:cuda_thrust_highlight = 1
+" let g:cuda_thrust_highlight = 1
 
 " 设置tagbar
 let g:tagbar_width=30
 let g:tagbar_left=1
 
 " welcome
+" luafile ~/.config/nvim/lua/catppuccin-themes.lua
 luafile ~/.config/nvim/lua/alpha-dot.lua
 " lsp && cmp
 set completeopt=menu,menuone,noselect
@@ -206,9 +217,18 @@ luafile ~/.config/nvim/lua/trouble-dot.lua
 
 luafile ~/.config/nvim/lua/lsp-handlers.lua
 
+"treesitter
+luafile ~/.config/nvim/lua/treesitter-dot.lua
+
 luafile ~/.config/nvim/lua/symbols-outline-dot.lua
 
 luafile ~/.config/nvim/lua/telescope-dot.lua
+
+luafile ~/.config/nvim/lua/neovim-session-manager-dot.lua
+
+luafile ~/.config/nvim/lua/sniprun-dot.lua
+
+luafile ~/.config/nvim/lua/nvim-tree-dot.lua
 " which keys
 luafile ~/.config/nvim/lua/whichkey-dot.lua
 
@@ -252,12 +272,6 @@ nmap <leader>0 <Plug>BufTabLine.Go(10)
 " 因为一些快捷键与'a'绑定, 所以取消了'a'进入插入模式
 "nnoremap a <nop>      
 
-
-" 配置nvim的terminal模式  未完成
-"tnoremap <Esc> <C-\><C-n>
-"tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
-
-
 "快捷键只在常规模式下有用 nnoremap
 "设置 " "fs 为保存文件
 "function vimfilertoRight()
@@ -266,9 +280,6 @@ nmap <leader>0 <Plug>BufTabLine.Go(10)
 
 nnoremap <F2> :TagbarToggle<CR>
 
-nnoremap <leader>fs :w<CR>
-nnoremap <leader>fsa :wall<CR>
-
 nnoremap <leader>qq :wq<CR>
 "vim windows窗口左右
 nnoremap <C-h> <C-w>h<CR>
@@ -276,13 +287,7 @@ nnoremap <C-l> <C-w>l<CR>
 nnoremap <C-j> <C-w>j<CR>
 nnoremap <C-k> <C-w>k<CR>
 
-"分割窗口
-nnoremap <leader>wj :split<CR>
-nnoremap <leader>wl :vsplit<CR>
-
-
 "set hidden " 避免必须保存才可以跳转buffer
-
 
 " 文件类型设置 FileType Settings
 set sw=4
@@ -294,7 +299,7 @@ autocmd FileType c set tabstop=4 shiftwidth=4 expandtab ai
 autocmd FileType python set tabstop=4 shiftwidth=4 expandtab ai
 autocmd FileType lua set tabstop=2 shiftwidth=2 expandtab ai
 autocmd FileType ruby,javascript,html,css,xml set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
-autocmd BufNewFile,BufRead *.cu set filetype=cpp
+" autocmd BufNewFile,BufRead *.cu set filetype=cpp
 
 "defx
 "-direction=topleft or botright
@@ -390,158 +395,3 @@ function! s:defx_my_settings() abort
 
 endfunction
 
-"denite
-" 
-
-"列出所有buffer
-nnoremap <leader>lb :Denite buffer<CR>
-"列出当前目录的文件
-"nnoremap <leader>lf :Denite file<CR>  没有必要
-"递归列出当前目录下的文件
-"nnoremap <leader>ls :Denite file/rec<CR>
-
-"Fzf
-" - Popup window (center of the screen)
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
-" let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6, 'relative': v:true, 'yoffset': 1.0 } }
-
-let g:fzf_tags_command = 'ctags -R -f ./.tags --exclude=".git" --exclude=".vscode"'
-" let g:fzf_preview_window = []
-
-"nnoremap <leader>ls :Files<CR>
-"nnoremap <leader>lf :Buffers<CR>
-nnoremap <leader>ls :Telescope find_files<CR>
-nnoremap <leader>lf :Buffers<CR>
-
-"列出当前文件的行
-"nnoremap <leader>ll :Denite line<CR>  
-nnoremap <leader>ll :Lines<CR>  
-noremap <leader>gls :GFiles<CR>
-noremap <leader>gss :GFiles?<CR>   
-
-"git 
-noremap <leader>gad :Git add %<CR>
-noremap <leader>gcm :Git commit<CR>
-noremap <leader>gbm :Git blame<CR>
-
-"buffer tags
-noremap <A-p> :BTags<CR>
-"dir tags
-noremap <A-P> :Tags<CR>
-let g:fzf_colors =
-    \ { 'fg':      ['fg', 'Normal'],
-      \ 'bg':      ['bg', 'Normal'],
-      \ 'hl':      ['fg', 'Comment'],
-      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-      \ 'hl+':     ['fg', 'Statement'],
-      \ 'info':    ['fg', 'PreProc'],
-      \ 'border':  ['fg', 'Ignore'],
-      \ 'prompt':  ['fg', 'Conditional'],
-      \ 'pointer': ['fg', 'Exception'],
-      \ 'marker':  ['fg', 'Keyword'],
-      \ 'spinner': ['fg', 'Label'],
-      \ 'header':  ['fg', 'Comment'] }
-
-" Change file/rec command.
-" 自定义变量
-call denite#custom#var('file/rec', 'command',
-	\ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
-
-call denite#custom#option('default', {
-	\ 'auto_resize': 1,
-	\ 'statusline': 0,
-	\ 'winheight': 15,
-	\ 'prompt': 'λ:',
-	\ 'start_filter': 1,
-	\ 'vertical_preview': 1, 
-	\ 'floating_preview': 1,
-	\ 'preview_width': 70,
-	\ 'preview_height': 30,
-	\ })
-
-"call denite#custom#option('default', {
-	"\ 'prompt': 'λ:',
-	"\ 'empty': 0,
-	"\ 'winheight': 16,
-	"\ 'source_names': 'short',
-	"\ 'floating-preview': 1,
-	"\ 'auto-accel': 1,
-	"\ 'auto-resume': 1,
-	"\ })
-
-"定义映射
-"正常模式下的映射
-
-
-"列出当前buffer的tag
-nnoremap <leader>lt :Denite outline <CR>
-
-
-"列出当前文件目录下的所有tag (means list all tags
-nnoremap <leader>lT :call denite#start([{'name':'outline',
-			\ 'args':['--recurse=yes', '-f=./.tags', '--exclude=".git" --exclude=".vscode"']}]) <CR>
-
-" Define mappings
-autocmd FileType denite call s:denite_my_settings()
-function! s:denite_my_settings() abort
-  nnoremap <silent><buffer><expr> <CR>
-  \ denite#do_map('do_action')
-  nnoremap <silent><buffer><expr> d
-  \ denite#do_map('do_action', 'delete')
-  nnoremap <silent><buffer><expr> p
-  \ denite#do_map('do_action', 'preview')
-  nnoremap <silent><buffer><expr> q
-  \ denite#do_map('quit')
-  nnoremap <silent><buffer><expr> i
-  \ denite#do_map('open_filter_buffer')
-  nnoremap <silent><buffer><expr> <Space>
-  \ denite#do_map('toggle_select').'j'
-endfunction
-
-"Denite插入模式下的映射
-call denite#custom#map(
-      \ 'insert',
-      \ '<C-j>',
-      \ '<denite:move_to_next_line>',
-      \ 'noremap'
-      \)
-call denite#custom#map(
-      \ 'insert',
-      \ '<Tab>',
-      \ '<denite:move_to_next_line>',
-      \ 'noremap' 
-	  \)
-call denite#custom#map(
-      \ 'insert',
-      \ '<C-k>',
-      \ '<denite:move_to_previous_line>',
-      \ 'noremap' 
-	  \)
-
-" Change matchers.
-call denite#custom#source(
-	\ 'file_mru', 'matchers', ['matcher/fuzzy', 'matcher/project_files'])
-call denite#custom#source(
-	\ 'file/rec', 'matchers', ['matcher/cpsm'])
-"call denite#custom#source(
-	""\ 'outline', 'args', )
-
-
-" Ag command on grep source
-call denite#custom#var('grep', 'command', ['ag'])
-call denite#custom#var('grep', 'default_opts',
-		\ ['-i', '--vimgrep'])
-call denite#custom#var('grep', 'recursive_opts', [])
-call denite#custom#var('grep', 'pattern_opt', [])
-call denite#custom#var('grep', 'separator', ['--'])
-call denite#custom#var('grep', 'final_opts', [])
-
-
-" Define alias
-call denite#custom#alias('source', 'file/rec/git', 'file/rec')
-call denite#custom#var('file/rec/git', 'command',
-      \ ['git', 'ls-files', '-co', '--exclude-standard'])
-
-call denite#custom#alias('source', 'file/rec/py', 'file/rec')
-call denite#custom#var('file/rec/py', 'command',['scantree.py'])

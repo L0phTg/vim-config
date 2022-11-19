@@ -48,6 +48,23 @@ require('lspconfig')['pyright'].setup{
     flags = lsp_flags,
     capabilities = capabilities
 }
+require('lspconfig')['sumneko_lua'].setup{
+    on_attach = on_attach,
+    flags = lsp_flags,
+    capabilities = capabilities
+}
+require('lspconfig')['yamlls'].setup{
+    on_attach = on_attach,
+    flags = lsp_flags,
+    settings = {
+      yaml = {
+        schemas = {
+          ["/home/l0phtg/.config/nvim/snippets/native_functions_schema.json"] = "/test_native_functions.yaml",
+        },
+      }
+    },
+    capabilities = capabilities
+}
 require('lspconfig')['tsserver'].setup{
     on_attach = on_attach,
     flags = lsp_flags,
@@ -81,3 +98,4 @@ require('lspconfig')['clangd'].setup{
     flags = lsp_flags,
     capabilities = capabilities
 }
+
