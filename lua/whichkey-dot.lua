@@ -105,14 +105,21 @@ local mappings = {
 
   p = {
     name = "Projects",
-    o = { "<cmd>Telescope projects<cr>", "Open Projects" },
-    P = { "<cmd>SessionManager load_session<cr>", "Projects" },
+    --o = { "<cmd>Telescope projects<cr>", "Open Projects" },
+    o = { "<cmd>SessionManager load_session<cr>", "Projects" },
+    s = { "<cmd>TodoTelescope<cr>", "List All marks"},
+    j = { "<cmd>Telescope jumplist<cr>", "List All jumps"}
   },
 
   w = {
     name = "Windows",
     j = { "<cmd>split<CR>", "split horizontal" },
     l = { "<cmd>vsplit<CR>", "split vertical" },
+  },
+
+  c = {
+    name = "Code&Compile",
+    t = { "<cmd>TodoTrouble<CR>", "todo list"},
   },
 
 --  c = {
@@ -162,24 +169,10 @@ local mappings = {
     g = { "<cmd>Gitsigns setloclist<cr>", "Open changed hunk" },
   },
 
-  -- g = {
-  --   name = "Git",
-  --   b = { "<cmd>VGit buffer_gutter_blame_preview<cr>", "File Blame" },
-  --   d = { "<cmd>VGit buffer_diff_preview<cr>", "Diff File" },
-  --   D = { "<cmd>VGit project_diff_preview<cr>", "Diff Project" },
-  --   s = { "<cmd>VGit buffer_stage<cr>", "Stage File" },
-  --   u = { "<cmd>VGit buffer_unstage<cr>", "Unstage File" },
-  --   r = { "<cmd>VGit buffer_reset<cr>", "Reset File" },
-  --   f = { "<cmd>VGit buffer_history_preview <cr>", "Reset File" },
-  --
-  --   B = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
-  --   c = { "<cmd>Telescope git_commits<cr>", "Checkout commit" },
-  -- },
-
   g = {
      name = "Git",
      -- g = { "<cmd>lua _LAZYGIT_TOGGLE()<CR>", "Lazygit" },
-     f = { "<cmd>DiffviewFileHistory<CR>", "File History" },
+     f = { "<cmd>DiffviewFileHistory %<CR>", "File History" },
      p = { "<cmd>DiffviewOpen<CR>", "Diff Project" },
      n = { "<cmd>lua require 'gitsigns'.next_hunk()<cr>", "Next Hunk" },
      N = { "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", "Prev Hunk" },
@@ -260,6 +253,16 @@ local mappings = {
   --   u = { "<cmd>HSRmHighlight<cr>", "RemoveHighlight" },
   --   U = { "<cmd>HSRmHighlight rm_all<cr>", "RemoveAllHighlight" },
   -- },
+  s = {
+    name = "Settings",
+    n = { "<cmd>set number!<cr>", "number"},
+    r = { "<cmd>set relativenumber!<cr>", "relative number"},
+    -- n = {
+      -- name = "Cancel Settings",
+      -- n = { "<cmd>set nonumber<cr>", "no number"},
+      -- r = { "<cmd>set norelativenumber<cr>", "no relative number"}
+    -- }
+  },
 
   h = {
     name = "Help",

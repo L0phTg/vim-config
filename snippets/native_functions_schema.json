@@ -1,0 +1,79 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema",
+    "$id": "native-functions-schema",
+
+    "properties": {
+        "func": {
+            "type": "string",
+            "title": "function name"
+        },
+        "device_check": {
+            "type": "string",
+            "title": "NoCheck/"
+        },
+        "device_guard": {
+            "type": "boolean",
+            "title": "True/False"
+        },
+        "variants": {
+            "type": "string",
+            "title": "function or method"
+        },
+        "structured": {
+            "type": "boolean"
+        },
+        "structured_inherits": {
+            "type": "string"
+        },
+        "structured_delegate": {
+            "type": "string"
+        },
+        "manual_cpp_binding": {
+            "type": "boolean",
+            "title": "is binding?"
+        },
+        "dispatch": {
+            "$ref": "#/definitions/dispatch"
+        }
+    },
+    "definitions": {
+        "dispatch": {
+            "type": "object",
+            "properties": {
+                "Meta": {
+
+                },
+                "CPU": {
+
+                },
+                "CUDA": {
+                    
+                },
+                "SparseCPU": {
+
+                },
+                "SparseCUDA": {
+
+                },
+                "SparseCsrCPU": {
+
+                },
+                "SparseCsrCUDA": {
+
+                },
+                "MkldnnCPU": {
+
+                },
+                "ZeroTensor": {
+
+                },
+                "CompositeExplicitAutograd": {
+
+                },
+                "CompositeImplicitAutograd": {
+
+                }
+            }
+        }
+    }
+}

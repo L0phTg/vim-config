@@ -148,17 +148,22 @@ Plug 'L3MON4D3/LuaSnip'
 Plug 'rafamadriz/friendly-snippets'
 Plug 'honza/vim-snippets'
 
+Plug 'lewis6991/gitsigns.nvim'
+Plug 'sindrets/diffview.nvim'
 " test
 "Plug 'nvim-lua/plenary.nvim'
 "Plug 'nvim-treesitter/nvim-treesitter'
 "Plug 'antoinemadec/FixCursorHold.nvim'
 "Plug 'nvim-neotest/neotest'
+Plug 'folke/todo-comments.nvim' " todo
 
 Plug 'folke/which-key.nvim'
 
 Plug 'Raimondi/delimitMate'       " 补全, \" \( 等.
 
 Plug 'scrooloose/nerdcommenter'   " 自动注释   <leader>cc  注释当先选中文本  <leader>cu 取消选中文本块的注释
+
+Plug 'lukas-reineke/indent-blankline.nvim'  "空格和换行format显示
 
 " Plug 'lvht/tagbar-markdown'       " markdown  tagbar显示, all change to lsp
 
@@ -217,6 +222,12 @@ luafile ~/.config/nvim/lua/trouble-dot.lua
 
 luafile ~/.config/nvim/lua/lsp-handlers.lua
 
+luafile ~/.config/nvim/lua/gitsigns-dot.lua
+luafile ~/.config/nvim/lua/diffview-dot.lua
+
+"todo-comments
+luafile ~/.config/nvim/lua/todo-dot.lua
+
 "treesitter
 luafile ~/.config/nvim/lua/treesitter-dot.lua
 
@@ -229,6 +240,7 @@ luafile ~/.config/nvim/lua/neovim-session-manager-dot.lua
 luafile ~/.config/nvim/lua/sniprun-dot.lua
 
 luafile ~/.config/nvim/lua/nvim-tree-dot.lua
+luafile ~/.config/nvim/lua/indent-dot.lua
 " which keys
 luafile ~/.config/nvim/lua/whichkey-dot.lua
 
