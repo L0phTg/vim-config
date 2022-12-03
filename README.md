@@ -1,9 +1,29 @@
 
-
 安装fzf, ripgrep, fd
+
+```bash
+$git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+$~/.fzf/install
+```
+
+```
+$ yum install yum-utils.noarch
+$ yum-config-manager --add-repo=https://copr.fedorainfracloud.org/coprs/carlwgeorge/ripgrep/repo/epel-7/carlwgeorge-ripgrep-epel-7.repo
+$ apt/yum install ripgrep
+```
+
+```
+wget https://github.com/sharkdp/fd/releases/download/v8.5.3/fd-v8.5.3-x86_64-unknown-linux-musl.tar.gz
+tar -xvf fd-v8.5.3-x86_64-unknown-linux-musl.tar.gz
+cp fd /usr/local/bin
+cp fd.1 /usr/local/share/man/man1/
+mandb
+```
 
 
 安装node, npm
+
+npm install -g neovim
 
 
 
