@@ -65,6 +65,8 @@ if not status_ok then
   return
 end
 
+require('nvim-tree-on-attach')
+
 nvim_tree.setup({
   auto_reload_on_write = true,
   disable_netrw = false,
@@ -73,6 +75,14 @@ nvim_tree.setup({
   hijack_unnamed_buffer_when_opening = false,
   open_on_tab = false,
   sort_by = "name",
+  view = {
+    hide_root_folder = false,
+    preserve_window_proportions = false,
+    number = false,
+    relativenumber = false,
+    signcolumn = "yes",
+    side = "right"
+  },
   on_attach=on_attach,
   renderer = {
     indent_markers = {
