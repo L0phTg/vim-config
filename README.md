@@ -73,3 +73,8 @@ $ sudo add-apt-repository ppa:git-core/ppa
 $ sudo apt update
 $ sudo apt install git
 ```
+
+3. 安装xclip, 方便系统和vim之前相互复制:
+```bash
+$ sudo apt install xclip
+```
