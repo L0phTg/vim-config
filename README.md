@@ -78,3 +78,19 @@ $ sudo apt install git
 ```bash
 $ sudo apt install xclip
 ```
+
+4. 使用wsl2时, 要使剪切板生效, 需要在`init.vim`中添加(这些脚本可以通过`help clipboard-wsl`得到):
+```bash
+let g:clipboard = {
+		\   'name': 'WslClipboard',
+		\   'copy': {
+		\      '+': 'clip.exe',
+		\      '*': 'clip.exe',
+		\    },
+		\   'paste': {
+		\      '+': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+		\      '*': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+		\   },
+		\   'cache_enabled': 0,
+                \ }
+```
