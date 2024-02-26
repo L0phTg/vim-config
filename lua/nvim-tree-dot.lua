@@ -76,7 +76,6 @@ nvim_tree.setup({
   open_on_tab = false,
   sort_by = "name",
   view = {
-    hide_root_folder = false,
     preserve_window_proportions = false,
     number = false,
     relativenumber = false,
