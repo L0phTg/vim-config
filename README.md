@@ -3,6 +3,22 @@
 ```
 $ wget https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
 ```
+centos 支持运行image:
+```bash
+$ yum install fuse-devel fuse-libs fuse
+$ lsmod | grep fuse
+$ modprobe fuse
+$ lsmod | grep fuse
+```
+可选: centos安装devtools:
+```
+$ yum install centos-release-scl
+$ yum install devtoolset-7
+# 开启方法1:
+$ scl enable devtoolset-7 bash # sch enable devtoolset-7 zsh
+# 开启方法2: 可以在.zshrc里面source
+source /opt/rh/devtoolset-7/enable
+```
 
 pip安装pynvim
 ```
