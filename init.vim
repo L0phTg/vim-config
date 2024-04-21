@@ -311,6 +311,7 @@ set sw=4
 set ts=4
 autocmd FileType markdown set tabstop=4 shiftwidth=4 expandtab ai
 autocmd FileType c++ set tabstop=4 shiftwidth=4 expandtab ai
+autocmd FileType cpp set tabstop=4 shiftwidth=4 expandtab ai
 autocmd FileType c set tabstop=4 shiftwidth=4 expandtab ai
 
 autocmd FileType python set tabstop=4 shiftwidth=4 expandtab ai
