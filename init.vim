@@ -310,7 +310,7 @@ noremap <C-Right> :vertical resize +2<CR>
 "add filetype mlir
 "dev environ: highlight mlir in markdown
 let g:markdown_fenced_languages = ['mlir']
-au BufRead,BufNewFile *.mlir set filetype=mlir
+autocmd BufRead,BufNewFile *.mlir set filetype=mlir
 
 " 文件类型设置 FileType Settings
 set sw=4
