@@ -101,6 +101,7 @@ Plug 'nvim-Treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 "search preview integrad
 "ripgrep for find files, grap
 Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-pack/nvim-spectre'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.x' }
 Plug 'nvim-telescope/telescope-live-grep-args.nvim'
