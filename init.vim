@@ -152,8 +152,6 @@ Plug 'honza/vim-snippets'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'sindrets/diffview.nvim'
 " test
-"Plug 'nvim-lua/plenary.nvim'
-"Plug 'nvim-treesitter/nvim-treesitter'
 "Plug 'antoinemadec/FixCursorHold.nvim'
 "Plug 'nvim-neotest/neotest'
 Plug 'folke/todo-comments.nvim' " todo
