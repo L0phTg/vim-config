@@ -320,6 +320,7 @@ autocmd FileType c++ set tabstop=4 shiftwidth=4 expandtab ai
 autocmd FileType cpp set tabstop=4 shiftwidth=4 expandtab ai
 autocmd FileType c set tabstop=4 shiftwidth=4 expandtab ai
 
+autocmd FileType mlir set tabstop=2 shiftwidth=2 expandtab ai
 autocmd FileType python set tabstop=4 shiftwidth=4 expandtab ai
 autocmd FileType lua set tabstop=2 shiftwidth=2 expandtab ai
 autocmd FileType ruby,javascript,html,css,xml set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
