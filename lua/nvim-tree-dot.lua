@@ -82,6 +82,9 @@ nvim_tree.setup({
     signcolumn = "yes",
     side = "right"
   },
+  filesystem_watchers  = {
+    enable = false
+  },
   on_attach=on_attach,
   renderer = {
     indent_markers = {
