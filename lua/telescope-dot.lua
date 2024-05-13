@@ -161,8 +161,8 @@ telescope.setup {
   pickers = {
     find_files = {
       theme = "dropdown",
-      previewer = false,
-      -- find_command = { "find", "-type", "f" },
+      --previewer = false,
+      --find_command = { "find", "-type", "f" },
       find_command = { "fd", "-I", '-E=".git"'},  -- "-H" search hidden files, "-I" do not respect to gitignore
     },
 
