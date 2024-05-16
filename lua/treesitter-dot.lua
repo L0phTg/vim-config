@@ -4,6 +4,9 @@ if not status_ok then
   return
 end
 
+-- 优先使用git下载
+require("nvim-treesitter.install").prefer_git = true
+
 configs.setup {
   ensure_installed = { "cpp", "c", "python", "go", "markdown", "json", "yaml", "html", "vim", "cmake", "tablegen", "mlir", "llvm"}, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
