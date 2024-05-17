@@ -38,6 +38,13 @@ local lsp_flags = {
 }
 
 local home_path = os.getenv("HOME")
+local workspace_path = vim.fn.getcwd()
+
+local status_ok, lspconfig = pcall(require, "lspconfig")
+if not status_ok then
+  vim.notify("lspconfig not found!")
+  return
+end
 
 -- Set up lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -69,6 +76,27 @@ require('lspconfig')['tsserver'].setup{
     on_attach = on_attach,
     flags = lsp_flags,
     capabilities = capabilities
+}
+require('lspconfig')['tblgen_lsp_server'].setup{
+    on_attach = on_attach,
+    filetypes = {'tablegen'},
+    cmd = {
+      "tblgen-lsp-server",
+      "--tablegen-compilation-database="..workspace_path.."/build/tablegen_compile_commands.yml",
+      "--pretty",
+    },
+    flags = lsp_flags,
+    capabilities = capabilities,
+}
+require('lspconfig')['mlir_lsp_server'].setup{
+    on_attach = on_attach,
+    filetypes = {'mlir'},
+    cmd = {
+      "mlir-lsp-server",
+      "--pretty",
+    },
+    flags = lsp_flags,
+    capabilities = capabilities,
 }
 require('lspconfig')['rust_analyzer'].setup{
     on_attach = on_attach,
