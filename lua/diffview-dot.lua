@@ -59,8 +59,8 @@ require 'diffview'.setup {
       ["gf"]         = cb("goto_file"), -- Open the file in a new split in previous tabpage
       ["<C-w><C-f>"] = cb("goto_file_split"), -- Open the file in a new split
       ["<C-w>gf"]    = cb("goto_file_tab"), -- Open the file in a new tabpage
-      ["<leader>e"]  = cb("focus_files"), -- Bring focus to the files panel
-      ["<leader>b"]  = cb("toggle_files"), -- Toggle the files panel.
+      --["<leader>e"]  = cb("focus_files"), -- Bring focus to the files panel
+      --["<leader>b"]  = cb("toggle_files"), -- Toggle the files panel.
     },
     file_panel = {
       ["j"]             = cb("next_entry"), -- Bring the cursor to the next file entry
@@ -82,8 +82,8 @@ require 'diffview'.setup {
       ["<C-w>gf"]       = cb("goto_file_tab"),
       ["i"]             = cb("listing_style"), -- Toggle between 'list' and 'tree' views
       ["f"]             = cb("toggle_flatten_dirs"), -- Flatten empty subdirectories in tree listing style.
-      ["<leader>e"]     = cb("focus_files"),
-      ["<leader>b"]     = cb("toggle_files"),
+      --["<leader>e"]     = cb("focus_files"),
+      --["<leader>b"]     = cb("toggle_files"),
     },
     file_history_panel = {
       ["g!"]            = cb("options"), -- Open the option panel
@@ -103,8 +103,8 @@ require 'diffview'.setup {
       ["gf"]            = cb("goto_file"),
       ["<C-w><C-f>"]    = cb("goto_file_split"),
       ["<C-w>gf"]       = cb("goto_file_tab"),
-      ["<leader>e"]     = cb("focus_files"),
-      ["<leader>b"]     = cb("toggle_files"),
+      --["<leader>e"]     = cb("focus_files"),
+      --["<leader>b"]     = cb("toggle_files"),
     },
     option_panel = {
       ["<tab>"] = cb("select"),
