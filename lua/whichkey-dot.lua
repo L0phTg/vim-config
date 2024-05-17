@@ -209,12 +209,19 @@ local mappings = {
     name = "LSP",
     l = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },
     d = {
-      "<cmd>Telescope lsp_document_diagnostics<cr>",
+      "<cmd>Telescope diagnostics<cr>",
       "Document Diagnostics",
     },
-    w = {
-      "<cmd>Telescope lsp_workspace_diagnostics<cr>",
-      "Workspace Diagnostics",
+    t = {
+      name = "Trouble",
+      w = {
+        "<cmd>Trouble workspace_diagnostics<cr>",
+        "Workspace Diagnostics",
+      },
+      d = {
+        "<cmd>Trouble document_diagnostics<cr>",
+        "Document Diagnostics",
+      },
     },
     f = { "<cmd>Format<cr>", "Format" },
     I = { "<cmd>Mason<cr>", "Installer Info" },
