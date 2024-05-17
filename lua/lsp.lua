@@ -39,6 +39,8 @@ local lsp_flags = {
   debounce_text_changes = 150,
 }
 
+local home_path = os.getenv("HOME")
+
 -- Set up lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
@@ -59,7 +61,7 @@ require('lspconfig')['yamlls'].setup{
     settings = {
       yaml = {
         schemas = {
-          ["/home/l0phtg/.config/nvim/snippets/native_functions_schema.json"] = "/test_native_functions.yaml",
+          [home_path.."/.config/nvim/snippets/native_functions_schema.json"] = "/test_native_functions.yaml",
         },
       }
     },
@@ -82,7 +84,7 @@ require('lspconfig')['rust_analyzer'].setup{
 require('lspconfig')['clangd'].setup{
     on_attach = on_attach,
     cmd = {
-      "/home/l0phtg/.local/share/nvim/mason/bin/clangd",
+      home_path.."/.local/share/nvim/mason/bin/clangd",
       "--completion-style=detailed",
       "--cross-file-rename=true",
       "--header-insertion=iwyu",
