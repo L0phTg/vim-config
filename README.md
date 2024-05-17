@@ -46,6 +46,9 @@ $ yum install ripgrep
 // ubuntu
 $ wget https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb
 $ sudo dpkg -i ripgrep_13.0.0_amd64.deb
+// aarch: https://github.com/BurntSushi/ripgrep/releases
+$ wget https://github.com/BurntSushi/ripgrep/releases/download/14.1.0/ripgrep-14.1.0-aarch64-unknown-linux-gnu.tar.gz
+$ tar xvzf ripgrep-14.1.0-aarch64-unknown-linux-gnu.tar.gz
 ```
 
 ```bash
